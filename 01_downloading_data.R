@@ -18,6 +18,7 @@ library(readxl)
 library(lubridate)
 library(stringr)
 library(tidyverse)
+library(openxlsx)
 
 ######################################################
 # 1. Folder Prep
@@ -49,7 +50,7 @@ for (i in 1:5){
 # Previous dataset ----------------------------------------------------
 
 # Downloading data from web
-source("Functions/download_from_URL.R")
+source("Functions/download_from_URL.R") # FUNCTION NEEDS DEVELOPMENT
 download_from_URL(adlt_prev_URL, new_fldr_path, "adult_cancer_survival_", "prev")
 
 # Uploading data to R environment
@@ -60,6 +61,6 @@ for (i in 1:5){
   colnames(df) <- df %>% slice(2) %>% unlist() %>% unname() %>% as.character()
   df <- df %>% tail(nrow(df)-2)
   
-  assign(paste0("adlt_rcnt_", i), df)
+  assign(paste0("adlt_prev_", i), df)
 }
 adlt_rcnt_1 <- readxl::read_excel(adult_cancer_survival_path, sheet = "Table 1")

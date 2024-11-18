@@ -20,11 +20,65 @@ download_from_URL <- function(URL, new_folder_path, data_type, additional = NULL
   download_status <- utils::download.file(url = URL, destfile = dest_file_path, mode = "wb")
   
   # Check if the download was successful
-  if (download_status == 0) {
-    cat("File downloaded successfully at:", dest_file_path, "\n")
-  } else {
-    cat("Failed to download the file.\n")
+  if (download_status != 0) {
+    stop("Failed to download the file.")
+  }
+  cat("File downloaded successfully at:", dest_file_path, "\n")
+
+  # If the file is an ODS, convert it to XLSX
+  if (file_extension == "ods") {
+    cat("Converting ODS to XLSX...\n")
+    
+    # Create a new file name for the XLSX file
+    xlsx_file_path <- file.path(new_folder_path, paste0(tools::file_path_sans_ext(file_name), ".xlsx"))
+    
+    # Initialize a new workbook
+    workbook <- createWorkbook()
+    
+    # Get the list of all sheet names in the ODS file
+    sheet_names <- readODS::ods_sheets(dest_file_path)
+    
+    # Loop through each sheet and add it to the XLSX file
+    for (sheet_name in sheet_names) {
+      cat("Processing sheet:", sheet_name, "\n")
+      
+      # Read the current sheet from the ODS file
+      sheet_data <- readODS::read_ods(dest_file_path, sheet = sheet_name)
+      
+      # Add a new worksheet to the workbook and write the data
+      addWorksheet(workbook, sheetName = sheet_name)
+      writeData(workbook, sheet = sheet_name, x = sheet_data)
+    }
+    
+    # Save the workbook as an XLSX file
+    saveWorkbook(workbook, file = xlsx_file_path, overwrite = TRUE)
+    
+    cat("File converted to XLSX with all sheets at:", xlsx_file_path, "\n")
+    
+    dest_file_path <- xlsx_file_path
+    
+    # Load the workbook
+    wb <- openxlsx::loadWorkbook(dest_file_path)
+
+    # Current sheet names
+    # sheet_names <- openxlsx::getSheetNames(dest_file_path)
+
+    # Renaming sheets
+    for (name in sheet_names) {
+      if (grepl("^Table_\\d+$", name)) {
+        # Extract the number and rename the sheet
+        new_name <- gsub("_", " ", name)
+        renameWorksheet(wb, sheet = name, newName = new_name)
+    }
+    }
+    
+    # Save the workbook with the new tab names
+    saveWorkbook(wb, file = dest_file_path, overwrite = TRUE)
+    
   }
   
   assign(paste0(data_type, "path", ifelse(is.na(additional), NULL, "_"), additional), dest_file_path, .GlobalEnv)
+  
+  # NEED TO DELETE SOME ROWS AUTOMATICALLY
+  # WOULD LIKE TO DELETE THE REMAINING ODS IN FOLDER
 }
