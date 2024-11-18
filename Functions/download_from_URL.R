@@ -1,4 +1,15 @@
-download_from_URL <- function(URL, new_folder_path, data_type, additional = NULL){
+#' download_from_URL
+#' 
+#' This function downloads either xlsx or ods files from online if a URL is supplied.
+#'
+#' @param URL is a string that is the URL to the relevant data file.
+#' @param new_folder_path is a string that is the path to the folder for the data to be saved.
+#' @param data_type is a string that specifies the data being stored (eg. adult_cancer_recent)
+#'
+#' @return Returns an excel file saved in the specified folder path.
+#'
+#' @author Emma Muijen
+download_from_URL <- function(URL, new_folder_path, data_type){
   
   library(readODS)
   library(openxlsx)
@@ -77,7 +88,7 @@ download_from_URL <- function(URL, new_folder_path, data_type, additional = NULL
     
   }
   
-  assign(paste0(data_type, "path", ifelse(is.na(additional), NULL, "_"), additional), dest_file_path, .GlobalEnv)
+  assign(paste0(data_type, "_path"), dest_file_path, .GlobalEnv)
   
   # NEED TO DELETE SOME ROWS AUTOMATICALLY
   # WOULD LIKE TO DELETE THE REMAINING ODS IN FOLDER

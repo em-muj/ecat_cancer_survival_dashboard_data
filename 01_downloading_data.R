@@ -34,33 +34,44 @@ new_folder(path_fldr)
 
 # Downloading data from web
 source("Functions/download_from_URL.R")
-download_from_URL(adlt_rcnt_URL, new_fldr_path, "adult_cancer_survival_")
+download_from_URL(adlt_rcnt_URL, new_fldr_path, "adult_cancer_survival_recent")
+
+# Cleaning the excel sheet
+source("Functions/clean_excel_sheets.R")
+clean_excel_sheets(adult_cancer_survival_path)
 
 # Uploading data to R environment
+source("Functions/read_from_cancer_site.R")
+read_from_cancer_site(adult_cancer_survival_path, 5, "adult_cancer_survival_rcnt")
 
-for (i in 1:5){
-  df <- readxl::read_excel(adult_cancer_survival_path, sheet = paste0("Table ", i))
-  
-  colnames(df) <- df %>% slice(2) %>% unlist() %>% unname() %>% as.character()
-  df <- df %>% tail(nrow(df)-2)
-  
-  assign(paste0("adlt_rcnt_", i), df)
-}
 
 # Previous dataset ----------------------------------------------------
 
 # Downloading data from web
 source("Functions/download_from_URL.R") # FUNCTION NEEDS DEVELOPMENT
-download_from_URL(adlt_prev_URL, new_fldr_path, "adult_cancer_survival_", "prev")
+download_from_URL(adlt_prev_URL, new_fldr_path, "adult_cancer_survival_prev")
+
+# Cleaning the excel sheet
+source("Functions/clean_excel_sheets.R")
+clean_excel_sheets(adult_cancer_survival_path_prev)
 
 # Uploading data to R environment
+source("Functions/read_from_cancer_site.R")
+read_from_cancer_site(adult_cancer_survival_path_prev, 5, "adult_cancer_survival_prev")
 
-for (i in 1:5){
-  df <- readxl::read_excel(adult_cancer_survival_path_prev, sheet = paste0("Table ", i))
-  
-  colnames(df) <- df %>% slice(2) %>% unlist() %>% unname() %>% as.character()
-  df <- df %>% tail(nrow(df)-2)
-  
-  assign(paste0("adlt_prev_", i), df)
-}
-adlt_rcnt_1 <- readxl::read_excel(adult_cancer_survival_path, sheet = "Table 1")
+
+######################################################
+# 3. Cancer Survival: Index for sub-ICBs
+######################################################
+
+# Downloading data from web
+source("Functions/download_from_URL.R")
+download_from_URL(survival_index_URL, new_fldr_path, "survival_index")
+
+# Cleaning the excel sheet
+source("Functions/clean_excel_sheets.R")
+clean_excel_sheets(survival_index_path)
+
+# Uploading data to R environment
+source("Functions/read_from.R")
+read_from(survival_index_path, "Geography type", "survival_index")

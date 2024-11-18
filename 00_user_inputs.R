@@ -9,6 +9,7 @@
 # 2. Adult Cancer Survival Data
 #   (a) Most up-to-date
 #   (b) Previous set
+# 3. Cancer survival: Index for sub-ICBs
 
 ######################################################
 # 2. Adult Cancer Survival Data
@@ -35,6 +36,14 @@ adlt_rcnt_URL <- "https://files.digital.nhs.uk/A9/647D6D/adult_cancer_survival_2
 # Please paste URL to previous adult cancer survival data tables (you can find this by
 # going to the webpage and right clicking the file, choosing "copy link address"):
 adlt_prev_URL <- "https://files.digital.nhs.uk/A1/FC58F2/adult_cancer_survival_2015_2019.ods"
+
+######################################################
+# 3. Cancer survival: Index for sub-ICBs
+######################################################
+
+# Please paste URL to most recent adult cancer survival index tables (you can find this by
+# going to the webpage and right clicking the file, choosing "copy link address"):
+survival_index_URL <- "https://files.digital.nhs.uk/6D/2C8DEA/Index_reference_tables20052020.xlsx"
 
 #######################
 # END USER INPUT - NOW RUN MAIN FILE
