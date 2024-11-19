@@ -1,7 +1,20 @@
+#' read_from
+#' 
+#' This function interprets a dataframe from an excel worksheet from a row containing a single specified entry.
+#'
+#' @param file_path is a string of the path of the excel worksheet
+#' @param key_column is a string that is the entry that the rows of the df should begin from.
+#' @param table_name is a string that is the name of the table saved to the global environment.
+#'
+#' @return returns dataframes from the workbook to the global environment, starting with the THIRD SHEET in the workbook.
+#' 
+#' @author Emma Muijen
 read_from <- function(file_path, key_column, table_name){
   
   # Get all sheet names
   sheet_names <- readxl::excel_sheets(file_path)
+  
+  # STARTING WITH THIRD SHEET - CHANGE THIS IF THIS IS NOT THE CASE IN THE WORKBOOK
   
   for (i in 3:length(sheet_names)){
   
