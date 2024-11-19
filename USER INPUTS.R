@@ -2,17 +2,20 @@
 # 15 November 2024
 # Prep for data download for survival dashboard
 
-# USER INPUTS FOR FILE NAMES
+# USER INPUTS FOR FILES
 
 # ToC:
 # 1. User Details
 # 2. Adult Cancer Survival Data
 #   (a) Most up-to-date
 #   (b) Previous set
-# 3. Cancer survival: Index for sub-ICBs
+# 3. Childhood Cancer Survival
+#   (a) Most up-to-date
+#   (b) Previous set
+# 4. Cancer survival: Index for sub-ICBs
 
 ######################################################
-# 2. Adult Cancer Survival Data
+# 1. User Details
 ######################################################
 # User must supply information on location of SharePoint folder for dashboard.
 # Please provide computer path to folder below
@@ -38,7 +41,23 @@ adlt_rcnt_URL <- "https://files.digital.nhs.uk/A9/647D6D/adult_cancer_survival_2
 adlt_prev_URL <- "https://files.digital.nhs.uk/A1/FC58F2/adult_cancer_survival_2015_2019.ods"
 
 ######################################################
-# 3. Cancer survival: Index for sub-ICBs
+# 3. Childhood Cancer Survival
+######################################################
+
+# (a) Up-To-Date Childhood Cancer Survival Data ----------------------------------------------
+
+# Please paste URL to most recent childhood cancer survival tables (you can find this by
+# going to the webpage and right clicking the file, choosing "copy link address"):
+childhood_recent_URL <- "https://files.digital.nhs.uk/CE/3C0052/childhood_cancer_survival_2002_2020.xlsx"
+
+# (b) Previous Childhood Cancer Survival Data ----------------------------------------------
+
+# Please paste URL to previous childhood cancer survival tables (you can find this by
+# going to the webpage and right clicking the file, choosing "copy link address"):
+childhood_prev_URL <- "https://files.digital.nhs.uk/D4/78B4DD/childhood_cancer_survival_2002_2019.ods"
+
+######################################################
+# 4. Cancer survival: Index for sub-ICBs
 ######################################################
 
 # Please paste URL to most recent adult cancer survival index tables (you can find this by

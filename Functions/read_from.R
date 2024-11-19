@@ -3,7 +3,7 @@ read_from <- function(file_path, key_column, table_name){
   # Get all sheet names
   sheet_names <- readxl::excel_sheets(file_path)
   
-  for (i in 1:length(sheet_names)){
+  for (i in 3:length(sheet_names)){
   
     # Read sheet into df
     raw_data <- read_excel(file_path, sheet = sheet_names[i], col_names = FALSE)
@@ -21,6 +21,6 @@ read_from <- function(file_path, key_column, table_name){
     }
     
     # Saving tables to environment
-    assign(paste0(table_name, "_table_",i), data, .GlobalEnv)
+    assign(paste0(table_name, "_table_",i-2), data, .GlobalEnv)
   }
 }
