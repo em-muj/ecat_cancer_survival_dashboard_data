@@ -2,6 +2,8 @@
 # 19 November 2024
 # Data prep for adult cancer survival datasets in survival dashboard
 
+# GOAL: TO MAKE THE BELOW CODE REPRODUCIBLE
+
 # ToC:
 # 1. Recent datasets
 #   (a) Table 1 - Gender & Age
@@ -194,7 +196,40 @@ adult_cancer_survival_prev_table_2_clean <- adult_cancer_survival_prev_table_2 %
 
 # Structuring similarly to the recent data table
 adult_cancer_survival_prev_table_2_clean_2 <- adult_cancer_survival_prev_table_2_clean %>%
+  dplyr::bind_rows(adult_cancer_survival_prev_table_2_clean) %>%
+  dplyr::arrange(cancer_site) %>%
   dplyr::group_by(cancer_site) %>%
-  dplyr::summarise(
-    stage_diagnosis = 
+  dplyr::mutate(stage_diagnosed = c("Stage 1 or 2", "Stage 3 or 4"),
+                one_year_prev = dplyr::case_when(
+                  stage_diagnosed == "Stage 1 or 2" ~ stage_1_2_survival_1yr,
+                  stage_diagnosed == "Stage 3 or 4" ~ stage_3_4_survival_1yr
+                ),
+                five_year_prev = dplyr::case_when(
+                  stage_diagnosed == "Stage 1 or 2" ~ stage_1_2_survival_5yr,
+                  stage_diagnosed == "Stage 1 or 2" ~ stage_3_4_survival_5yr
+                )
+  ) %>%
+  dplyr::ungroup() %>%
+  dplyr::select(cancer_site, stage_diagnosed, one_year_prev, five_year_prev)
+
+  # Joining the recent and previous datasets
+
+adult_STAGE_trends <- inner_join(adult_cancer_survival_rcnt_STAGE2, adult_cancer_survival_prev_table_2_clean_2, by = c("cancer_site", "stage_diagnosed"))
+
+# Calculating percentage increase/decrease
+
+adult_STAGE_trends_2 <- adult_STAGE_trends %>%
+  dplyr::mutate(
+    one_year_pct_change = 
+      dplyr::case_when(
+        !is.na(one_year_survival) & !is.na(one_year_prev) ~ 
+          100*(one_year_survival - one_year_prev)/one_year_prev,
+        TRUE ~ NA
+      ),
+    five_year_pct_change = 
+      dplyr::case_when(
+        !is.na(five_year_survival) & !is.na(five_year_prev) ~ 
+          100*(five_year_survival - five_year_prev)/five_year_prev,
+        TRUE ~ NA
+      )
   )

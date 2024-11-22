@@ -21,3 +21,6 @@ source("Background Processes/01_downloading_data.R")
 
 source("Background Processes/02_adult_data_prep.R")
 
+# 2. Preparing Childhood Cancer Survival Data -------------------------------------------
+
+source("Background Processes/03_childhood_data_prep.R")
