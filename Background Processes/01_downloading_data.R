@@ -89,19 +89,19 @@ print("Recent childhood cancer survival dataset downloaded.")
 
 # Previous data ----------------------------------------------------
 
-# Downloading data from web
-source("Functions/download_from_URL.R")
-download_from_URL(childhood_prev_URL, new_fldr_path, "childhood_survival_prev")
-
-# Cleaning the excel sheet
-source("Functions/clean_excel_sheets.R")
-clean_excel_sheets(childhood_survival_prev_path)
-
-# Uploading data to R environment
-source("Functions/read_from.R")
-read_from(childhood_survival_prev_path, "Year of diagnosis", "childhood_survival_prev")
-
-print("Previous childhood cancer survival dataset downloaded.")
+# # Downloading data from web
+# source("Functions/download_from_URL.R")
+# download_from_URL(childhood_prev_URL, new_fldr_path, "childhood_survival_prev")
+# 
+# # Cleaning the excel sheet
+# source("Functions/clean_excel_sheets.R")
+# clean_excel_sheets(childhood_survival_prev_path)
+# 
+# # Uploading data to R environment
+# source("Functions/read_from.R")
+# read_from(childhood_survival_prev_path, "Year of diagnosis", "childhood_survival_prev")
+# 
+# print("Previous childhood cancer survival dataset downloaded.")
 
 ######################################################
 # 4. Cancer Survival: Index for sub-ICBs
