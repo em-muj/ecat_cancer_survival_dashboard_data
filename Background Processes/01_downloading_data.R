@@ -16,15 +16,20 @@
 # Uploading user inputs
 source("USER INPUTS.R")
 
+print("User inputs understood.")
 
 # Libraries ---------------------------------------------------------------
 source("Background Processes/00_required_libraries.R")
+
+print("Packages understood.")
 
 ######################################################
 # 1. Folder Prep
 ######################################################
 source("Functions/new_folder.R")
 new_folder(path_fldr)
+
+print("New folder created.")
 
 ######################################################
 # 2. Adult Cancer Survival Data
@@ -44,6 +49,8 @@ clean_excel_sheets(adult_cancer_survival_recent_path)
 source("Functions/read_from_cancer_site.R")
 read_from_cancer_site(adult_cancer_survival_recent_path, 5, "adult_cancer_survival_rcnt")
 
+print("Recent adult cancer survival dataset downloaded.")
+
 # Previous dataset ----------------------------------------------------
 
 # Downloading data from web
@@ -58,6 +65,7 @@ clean_excel_sheets(adult_cancer_survival_prev_path)
 source("Functions/read_from_cancer_site.R")
 read_from_cancer_site(adult_cancer_survival_prev_path, 5, "adult_cancer_survival_prev")
 
+print("Previous adult cancer survival dataset downloaded.")
 
 ######################################################
 # 3. Childhood Cancer Survival
@@ -77,6 +85,8 @@ clean_excel_sheets(childhood_survival_recent_path)
 source("Functions/read_from.R")
 read_from(childhood_survival_recent_path, "Year of diagnosis", "childhood_survival_recent")
 
+print("Recent childhood cancer survival dataset downloaded.")
+
 # Previous data ----------------------------------------------------
 
 # Downloading data from web
@@ -91,6 +101,8 @@ clean_excel_sheets(childhood_survival_prev_path)
 source("Functions/read_from.R")
 read_from(childhood_survival_prev_path, "Year of diagnosis", "childhood_survival_prev")
 
+print("Previous childhood cancer survival dataset downloaded.")
+
 ######################################################
 # 4. Cancer Survival: Index for sub-ICBs
 ######################################################
@@ -101,8 +113,10 @@ download_from_URL(survival_index_URL, new_fldr_path, "survival_index")
 
 # Cleaning the excel sheet
 source("Functions/clean_excel_sheets.R")
-clean_excel_sheets(survival_index_path) # ISSUE AT THIS STEP WHERE ENGLAND RECORDS DELETED
+clean_excel_sheets(survival_index_path)
 
 # Uploading data to R environment
 source("Functions/read_from.R")
 read_from(survival_index_path, "Geography type", "survival_index")
+
+print("Overall cancer survival index dataset downloaded.")

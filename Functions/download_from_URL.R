@@ -44,7 +44,7 @@ download_from_URL <- function(URL, new_folder_path, data_type){
     xlsx_file_path <- file.path(new_folder_path, paste0(tools::file_path_sans_ext(file_name), ".xlsx"))
     
     # Initialize a new workbook
-    workbook <- createWorkbook()
+    workbook <- openxlsx::createWorkbook()
     
     # Get the list of all sheet names in the ODS file
     sheet_names <- readODS::ods_sheets(dest_file_path)
@@ -57,12 +57,12 @@ download_from_URL <- function(URL, new_folder_path, data_type){
       sheet_data <- readODS::read_ods(dest_file_path, sheet = sheet_name)
       
       # Add a new worksheet to the workbook and write the data
-      addWorksheet(workbook, sheetName = sheet_name)
-      writeData(workbook, sheet = sheet_name, x = sheet_data)
+      openxlsx::addWorksheet(workbook, sheetName = sheet_name)
+      openxlsx::writeData(workbook, sheet = sheet_name, x = sheet_data)
     }
     
     # Save the workbook as an XLSX file
-    saveWorkbook(workbook, file = xlsx_file_path, overwrite = TRUE)
+    openxlsx::saveWorkbook(workbook, file = xlsx_file_path, overwrite = TRUE)
     
     cat("File converted to XLSX with all sheets at:", xlsx_file_path, "\n")
     
@@ -79,17 +79,16 @@ download_from_URL <- function(URL, new_folder_path, data_type){
       if (grepl("^Table_\\d+$", name)) {
         # Extract the number and rename the sheet
         new_name <- gsub("_", " ", name)
-        renameWorksheet(wb, sheet = name, newName = new_name)
+        openxlsx::renameWorksheet(wb, sheet = name, newName = new_name)
     }
     }
     
     # Save the workbook with the new tab names
-    saveWorkbook(wb, file = dest_file_path, overwrite = TRUE)
+    openxlsx::saveWorkbook(wb, file = dest_file_path, overwrite = TRUE)
     
   }
   
   assign(paste0(data_type, "_path"), dest_file_path, .GlobalEnv)
   
-  # NEED TO DELETE SOME ROWS AUTOMATICALLY
-  # WOULD LIKE TO DELETE THE REMAINING ODS IN FOLDER
+
 }
