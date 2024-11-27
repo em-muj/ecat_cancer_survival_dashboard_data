@@ -11,29 +11,29 @@
 clean_excel_sheets <- function(file_path) {
   
   # Load the workbook
-  wb <- loadWorkbook(file_path)
+  wb <- openxlsx::loadWorkbook(file_path)
   
   # Get all sheet names
-  sheet_names <- getSheetNames(file_path)
+  sheet_names <- openxlsx::getSheetNames(file_path)
   
   # Iterate through each sheet
   for (sheet_name in sheet_names) {
     
     # Read the sheet into a dataframe without setting column names initially
-    raw_data <- read_excel(file_path, sheet = sheet_name, col_names = FALSE)
+    raw_data <- readxl::read_excel(file_path, sheet = sheet_name, col_names = FALSE)
     
     # Remove rows that are entirely null (all NA or empty strings)
     cleaned_data <- raw_data %>%
-      filter(rowSums(is.na(.)) != ncol(.) & rowSums(. == "") != ncol(.))
+      dplyr::filter(!apply(., 1, function(row) all(is.na(row) | trimws(row) == "")))
     
     # Clear the existing worksheet
-    removeWorksheet(wb, sheet_name)
+    openxlsx::removeWorksheet(wb, sheet_name)
     # Add a cleaned worksheet with the same name
-    addWorksheet(wb, sheet_name)
+    openxlsx::addWorksheet(wb, sheet_name)
     # Write cleaned data to the worksheet
-    writeData(wb, sheet_name, cleaned_data)
+    openxlsx::writeData(wb, sheet_name, cleaned_data)
   }
   
   # Save the cleaned workbook, overwriting the original file
-  saveWorkbook(wb, file_path, overwrite = TRUE)
+  openxlsx::saveWorkbook(wb, file_path, overwrite = TRUE)
 }

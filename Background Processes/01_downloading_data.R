@@ -101,7 +101,7 @@ download_from_URL(survival_index_URL, new_fldr_path, "survival_index")
 
 # Cleaning the excel sheet
 source("Functions/clean_excel_sheets.R")
-clean_excel_sheets(survival_index_path)
+clean_excel_sheets(survival_index_path) # ISSUE AT THIS STEP WHERE ENGLAND RECORDS DELETED
 
 # Uploading data to R environment
 source("Functions/read_from.R")
