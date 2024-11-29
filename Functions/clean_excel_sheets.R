@@ -10,6 +10,8 @@
 
 clean_excel_sheets <- function(file_path) {
   
+  file_path <- normalizePath(file_path, winslash = "/", mustWork = TRUE)
+  
   # Load the workbook
   wb <- openxlsx::loadWorkbook(file_path)
   

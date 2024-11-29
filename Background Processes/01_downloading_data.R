@@ -16,12 +16,12 @@
 # Uploading user inputs
 source("USER INPUTS.R")
 
-print("User inputs understood.")
+message("User inputs understood.")
 
 # Libraries ---------------------------------------------------------------
 source("Background Processes/00_required_libraries.R")
 
-print("Packages understood.")
+message("Packages understood.")
 
 ######################################################
 # 1. Folder Prep
@@ -29,7 +29,7 @@ print("Packages understood.")
 source("Functions/new_folder.R")
 new_folder(path_fldr)
 
-print("New folder created.")
+message("New folder created.")
 
 ######################################################
 # 2. Adult Cancer Survival Data
@@ -49,7 +49,7 @@ clean_excel_sheets(adult_cancer_survival_recent_path)
 source("Functions/read_from_cancer_site.R")
 read_from_cancer_site(adult_cancer_survival_recent_path, 5, "adult_cancer_survival_rcnt")
 
-print("Recent adult cancer survival dataset downloaded.")
+message("Recent adult cancer survival dataset downloaded.")
 
 # Previous dataset ----------------------------------------------------
 
@@ -65,7 +65,7 @@ clean_excel_sheets(adult_cancer_survival_prev_path)
 source("Functions/read_from_cancer_site.R")
 read_from_cancer_site(adult_cancer_survival_prev_path, 5, "adult_cancer_survival_prev")
 
-print("Previous adult cancer survival dataset downloaded.")
+message("Previous adult cancer survival dataset downloaded.")
 
 ######################################################
 # 3. Childhood Cancer Survival
@@ -85,7 +85,7 @@ clean_excel_sheets(childhood_survival_recent_path)
 source("Functions/read_from.R")
 read_from(childhood_survival_recent_path, "Year of diagnosis", "childhood_survival_recent")
 
-print("Recent childhood cancer survival dataset downloaded.")
+message("Recent childhood cancer survival dataset downloaded.")
 
 # Previous data ----------------------------------------------------
 
@@ -101,7 +101,7 @@ print("Recent childhood cancer survival dataset downloaded.")
 # source("Functions/read_from.R")
 # read_from(childhood_survival_prev_path, "Year of diagnosis", "childhood_survival_prev")
 # 
-# print("Previous childhood cancer survival dataset downloaded.")
+# message("Previous childhood cancer survival dataset downloaded.")
 
 ######################################################
 # 4. Cancer Survival: Index for sub-ICBs
@@ -119,4 +119,4 @@ clean_excel_sheets(survival_index_path)
 source("Functions/read_from.R")
 read_from(survival_index_path, "Geography type", "survival_index")
 
-print("Overall cancer survival index dataset downloaded.")
+message("Overall cancer survival index dataset downloaded.")

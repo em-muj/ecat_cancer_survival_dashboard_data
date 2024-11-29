@@ -34,3 +34,5 @@ for (i in unique(all_cancer_survival$years_since_diagnosis)){
   
   assign(paste0("all_cancer_survival_", i, "_years"), df)
 }
+
+message("Index data prepped.")

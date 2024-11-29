@@ -233,3 +233,5 @@ adult_STAGE_trends_2 <- adult_STAGE_trends %>%
         TRUE ~ NA
       )
   )
+
+message("Adult cancer survival data prepped")
