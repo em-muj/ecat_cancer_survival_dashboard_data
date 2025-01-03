@@ -64,6 +64,13 @@ childhood_prev_URL <- "https://files.digital.nhs.uk/D4/78B4DD/childhood_cancer_s
 # going to the webpage and right clicking the file, choosing "copy link address"):
 survival_index_URL <- "https://files.digital.nhs.uk/6D/2C8DEA/Index_reference_tables20052020.xlsx"
 
+######################################################
+# 5. Cancer Incidence: Registrations
+######################################################
+
+# Visit following website: https://digital.nhs.uk/data-and-information/publications/statistical/cancer-registration-statistics/england-2022
+# Download "Cancer registration statistics, England 2022 data tables - OpenDocument spreadsheet"
+# Save cancer_registrations_2022_table_1_national to data folder (new_fldr_path created in 01_downloading_data.R script)
 #######################
 # END USER INPUT - NOW RUN MAIN FILE
 #######################

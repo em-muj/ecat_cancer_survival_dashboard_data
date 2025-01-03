@@ -120,3 +120,33 @@ source("Functions/read_from.R")
 read_from(survival_index_path, "Geography type", "survival_index")
 
 message("Overall cancer survival index dataset downloaded.")
+
+######################################################
+# 5. Cancer Incidence: Registrations
+######################################################
+
+# # Downloading data from web
+# source("Functions/download_from_URL.R")
+# download_from_URL(incidence_URL, new_fldr_path, "incidence")
+# 
+# # Cleaning the excel sheet
+# source("Functions/clean_excel_sheets.R")
+# clean_excel_sheets(incidence_path)
+# 
+# # Uploading data to R environment
+# source("Functions/read_from.R")
+# read_from(incidence_path, "ICD10 code", "incidence")
+
+# Downloading data
+source("Functions/download_ODS.R")
+download_ODS("incidence_data", paste0(new_fldr_path, "/cancer_registrations_2022_table_1_national.ods"), "Table_1_National")
+
+# Cleaning the excel sheet
+source("Functions/clean_excel_sheets.R")
+clean_excel_sheets(incidence_data_file_path)
+
+# Uploading data to R environment
+source("Functions/read_from.R")
+read_from(incidence_data_file_path, "Geography type", "incidence")
+
+message("Cancer incidence dataset downloaded.")

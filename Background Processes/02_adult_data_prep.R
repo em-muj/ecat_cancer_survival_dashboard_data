@@ -63,7 +63,42 @@ adult_cancer_survival_rcnt_table_1_ch2 <- adult_cancer_survival_rcnt_table_1_ch1
                    five_year_survival = ifelse(sum(five_year_survival, na.rm = T) == 0, NA, sum(five_year_survival, na.rm = T)),
                    ten_year_survival = ifelse(sum(ten_year_survival, na.rm = T) == 0, NA, sum(ten_year_survival, na.rm = T))) %>%
   ungroup() %>%
-  dplyr::select(cancer_site, one_year_survival, five_year_survival, ten_year_survival)
+  dplyr::select(cancer_site, one_year_survival, five_year_survival, ten_year_survival) %>%
+  
+  # Specifying ICD10 Codes
+  
+  mutate(ICD10 = dplyr::case_when(
+    cancer_site == "Anus" ~ "C21",
+    cancer_site == "Bladder" ~ "C67",
+    cancer_site == "Bowel" ~ "C17 / C18 / C20",
+    cancer_site == "Brain" ~ "C71",
+    cancer_site == "Breast" ~ "C50",
+    cancer_site == "Colon" ~ "C18",
+    cancer_site == "Diffuse large B-cell lymphoma" ~ "C83.3",
+    cancer_site == "Eye" ~ "C69",
+    cancer_site == "Follicular (nodular) NHL" ~ "C82",
+    cancer_site == "Gallbladder" ~ "C23",
+    cancer_site == "Hodgkin lymphoma" ~ "C81",
+    cancer_site == "Kidney" ~ "C64",
+    cancer_site == "Leukaemia" ~ "C91 - C94",
+    cancer_site == "Liver" ~ "C22",
+    cancer_site == "Lung" ~ "C34",
+    cancer_site == "Melanoma" ~ "C43",
+    cancer_site == "Mesothelioma" ~ "C45",
+    cancer_site == "Myeloid leukaemia" ~ "C92",
+    cancer_site == "Myeloma" ~ "C90",
+    cancer_site == "Non-Hodgkin lymphoma" ~ "C82 - C85",
+    cancer_site == "Oesophagus" ~ "C15",
+    cancer_site == "Pancreas" ~ "C25",
+    cancer_site == "Rectal" ~ "C20",
+    cancer_site == "Small intestine" ~ "C17",
+    cancer_site == "Stomach" ~ "C16",
+    cancer_site == "Thyroid" ~ "C73"
+    
+  ))
+
+
+
 
 
 # (b) Table 2 - Gender & Stage-------------------------------------------------------------
@@ -82,14 +117,15 @@ adult_cancer_survival_rcnt_STAGE <- adult_cancer_survival_rcnt_table_2 %>%
 
 # Specifying Stage 1/2 and 3/4
 adult_cancer_survival_rcnt_STAGE2 <- adult_cancer_survival_rcnt_STAGE %>%
-  dplyr::mutate(
-    stage_diagnosed = dplyr::case_when(
-      stage_at_diagnosis %in% c("1","2") ~ "Stage 1 or 2",
-      stage_at_diagnosis %in% c("3", "4") ~ "Stage 3 or 4",
-      stage_at_diagnosis == "Unstageable" ~ "Unstageable",
-      TRUE ~ NA
-    )
-  ) %>%
+  # dplyr::mutate(
+  #   stage_diagnosed = dplyr::case_when(
+  #     stage_at_diagnosis %in% c("1","2") ~ "Stage 1 or 2",
+  #     stage_at_diagnosis %in% c("3", "4") ~ "Stage 3 or 4",
+  #     stage_at_diagnosis == "Unstageable" ~ "Unstageable",
+  #     TRUE ~ NA
+  #   )
+  # ) %>%
+  dplyr::mutate(stage_diagnosed = as.character(stage_at_diagnosis)) %>%
   dplyr::group_by(cancer_site, stage_diagnosed) %>%
   dplyr::mutate(
     one_year_survival = dplyr::case_when(
@@ -102,12 +138,12 @@ adult_cancer_survival_rcnt_STAGE2 <- adult_cancer_survival_rcnt_STAGE %>%
       years_since_diagnosis == 10 ~ as.numeric(net_survival_percent)
     )
   ) %>%
-  dplyr::summarise(one_year_survival = ifelse(sum(one_year_survival, na.rm = T) == 0, NA, 100*sum(one_year_survival, na.rm = T)/200),
-                   five_year_survival = ifelse(sum(five_year_survival, na.rm = T) == 0, NA, 100*sum(five_year_survival, na.rm = T)/200),
-                   ten_year_survival = ifelse(sum(ten_year_survival, na.rm = T) == 0, NA, 100*sum(ten_year_survival, na.rm = T)/200)) %>%
+  dplyr::summarise(one_year_survival = ifelse(sum(one_year_survival, na.rm = T) == 0, NA, sum(one_year_survival, na.rm = T)),
+                   five_year_survival = ifelse(sum(five_year_survival, na.rm = T) == 0, NA, sum(five_year_survival, na.rm = T)),
+                   ten_year_survival = ifelse(sum(ten_year_survival, na.rm = T) == 0, NA, sum(ten_year_survival, na.rm = T))) %>%
   ungroup() %>%
   dplyr::select(cancer_site, stage_diagnosed, one_year_survival, five_year_survival, ten_year_survival) %>%
-  dplyr::filter(!is.na(stage_diagnosed))
+  dplyr::filter(!is.na(stage_diagnosed) & stage_diagnosed %in% c("1", "2", "3", "4", "Unstageable"))
 
 # (c) Table 3 - Gender & Deprivation -------------------------------------------------------------
 
