@@ -22,7 +22,11 @@ df_list <- list(
   ten_yr_childhood_survival = ten_yr_childhood_survival,
   all_one_yr_survival = all_cancer_survival_1_years,
   all_five_yr_survival = all_cancer_survival_5_years,
-  all_ten_yr_survival = all_cancer_survival_10_years
+  all_ten_yr_survival = all_cancer_survival_10_years,
+  trends_one_yr_survival = adult_trends_ONE,
+  trends_five_yr_survival = adult_trends_FIVE,
+  survival_by_age = adult_cancer_age_ALL,
+  survival_by_region = adult_cancer_geography_all
 )
 
 # Saving each table as a tab in an excel file

@@ -31,7 +31,8 @@ new_folder <- function(path){
   assign("new_fldr_path", fldr_path, .GlobalEnv)
   
   # Print message
-  return(cat("Folder created at:", fldr_path, "\n"))
+  message("New folder created.")
+  message(cat("Folder created at:", fldr_path, "\n"))
   
   
 }

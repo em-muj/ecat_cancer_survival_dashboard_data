@@ -139,7 +139,7 @@ message("Overall cancer survival index dataset downloaded.")
 
 # Downloading data
 source("Functions/download_ODS.R")
-download_ODS("incidence_data", paste0(new_fldr_path, "/cancer_registrations_2022_table_1_national.ods"), "Table_1_National")
+download_ODS("incidence_data", paste0(new_fldr_path, "/cancer_registrations_2022_table_2_national.ods"), "Table_1_National")
 
 # Cleaning the excel sheet
 source("Functions/clean_excel_sheets.R")
@@ -150,3 +150,12 @@ source("Functions/read_from.R")
 read_from(incidence_data_file_path, "Geography type", "incidence")
 
 message("Cancer incidence dataset downloaded.")
+
+
+######################################################
+# 6. ICBs - Longitude and Latitude
+######################################################
+
+ICB_loc <- read.csv(paste0(path_fldr, "/Integrated_Care_Boards_April_2023_LOCATIONS.csv"))
+
+# Data found at: https://geoportal.statistics.gov.uk/datasets/ons::integrated-care-boards-april-2023-en-bsc-2/explore?location=52.954548%2C0.164306%2C6.50

@@ -9,6 +9,8 @@
 #   (a) Table 1 - Gender & Age
 #   (b) Table 2 - Gender & Stage
 #   (c) Table 3 - Gender & Deprivation
+#   (d) Table 5 - Trends
+#   (e) Table 4 - Geography
 # 2. Trends between recent and previous datasets
 #   (a) Trends for cancer sites
 #   (b) Trends for cancer sites by stage
@@ -99,6 +101,35 @@ adult_cancer_survival_rcnt_table_1_ch2 <- adult_cancer_survival_rcnt_table_1_ch1
 
 
 
+########################## Creating Survival by Age Table ##########################
+
+# Filtering relevant data
+adult_cancer_age <- adult_cancer_survival_rcnt_table_1 %>%
+  dplyr::filter((!("Persons" %in% gender) | gender == "Persons") & standardisation_type == "Non-standardised" &
+                  years_since_diagnosis %in% c(1, 5, 10) &
+                  age_at_diagnosis_years != "All ages")
+
+# Calculating survival for 1 year
+adult_cancer_age_ONE_YR <- adult_cancer_age %>%
+  dplyr::filter(years_since_diagnosis == 1) %>%
+  dplyr::select(cancer_site, age_at_diagnosis_years, net_survival_percent) %>%
+  dplyr::rename(one_yr_survival = net_survival_percent)
+
+
+  
+# Calculating survival for 5 years
+adult_cancer_age_FIVE_YR <- adult_cancer_age %>%
+  dplyr::filter(years_since_diagnosis == 5) %>%
+  dplyr::select(cancer_site, age_at_diagnosis_years, net_survival_percent) %>%
+  dplyr::rename(five_yr_survival = net_survival_percent)
+
+
+# Joining one year and five year tables
+adult_cancer_age_ALL <- adult_cancer_age_ONE_YR %>%
+  dplyr::full_join(adult_cancer_age_FIVE_YR, by = join_by(cancer_site, age_at_diagnosis_years)) %>%
+  dplyr::arrange(cancer_site, age_at_diagnosis_years)
+
+
 
 
 # (b) Table 2 - Gender & Stage-------------------------------------------------------------
@@ -179,6 +210,88 @@ adult_cancer_survival_rcnt_DEPRIVATION_2 <- adult_cancer_survival_rcnt_DEPRIVATI
   dplyr::select(cancer_site, imd_quintile, one_year_survival, five_year_survival, ten_year_survival)
 
 
+
+
+# (d) Table 5 - Trends ----------------------------------------------------
+
+adult_trends <- adult_cancer_survival_rcnt_table_5 %>%
+  dplyr::group_by(cancer_site) %>%
+  dplyr::arrange(gender) %>%
+  dplyr::filter(
+    geography_name == "England" &
+    (gender == "Persons" | !any(gender == "Persons"))
+  ) %>%
+  dplyr::ungroup()
+
+
+# ONE YEAR DATASET
+
+adult_trends_ONE_1 <- adult_trends %>%
+  dplyr::filter(years_since_diagnosis == 1) %>%
+  dplyr::select(-c(geography_type, geography_code, geography_name, gender, years_since_diagnosis,
+                   trend_estimate, significance_level))
+
+adult_trends_ONE <- adult_trends_ONE_1 %>%
+  tidyr::pivot_longer(cols = c("x2007_to_2011", "x2008_to_2012", "x2009_to_2013", "x2010_to_2014", 
+                               "x2011_to_2015", "x2012_to_2016", "x2013_to_2017", "x2014_to_2018",
+                               "x2015_to_2019", "x2016_to_2020"),
+                      names_to = "period",
+                      values_to = "Survival") %>%
+  dplyr::mutate(period = str_replace_all(period, c("^x" = "", "_to_" = " - "))
+                      )%>%
+  dplyr::arrange(desc(period))
+
+# FIVE YEAR DATASET
+
+adult_trends_FIVE_1 <- adult_trends %>%
+  dplyr::filter(years_since_diagnosis == 5) %>%
+  dplyr::select(-c(geography_type, geography_code, geography_name, gender, years_since_diagnosis,
+                   trend_estimate, significance_level))
+
+adult_trends_FIVE <- adult_trends_FIVE_1 %>%
+  tidyr::pivot_longer(cols = c("x2007_to_2011", "x2008_to_2012", "x2009_to_2013", "x2010_to_2014", 
+                               "x2011_to_2015", "x2012_to_2016", "x2013_to_2017", "x2014_to_2018",
+                               "x2015_to_2019", "x2016_to_2020"),
+                      names_to = "period",
+                      values_to = "Survival") %>%
+  dplyr::mutate(
+    period = str_replace_all(period, c("^x" = "", "_to_" = " - "))
+  ) %>%
+  dplyr::arrange(desc(period))
+
+
+
+# (e) Table 4 - Geography -------------------------------------------------
+
+adult_cancer_geography <- adult_cancer_survival_rcnt_table_4 %>%
+  dplyr::filter((!("Persons" %in% gender) | gender == "Persons") & standardisation_type == "Age-standardised (5 age groups)" &
+                         years_since_diagnosis %in% c(1, 5, 10))
+
+
+##### Creating 1 yr table #################
+
+adult_cancer_geography_1YR <- adult_cancer_geography %>%
+  dplyr::filter(years_since_diagnosis == 1 & geography_type == "Integrated Care Board") %>%
+  dplyr::select(geography_code, geography_name, cancer_site, net_survival_percent) %>%
+  dplyr::rename(one_yr_survival = net_survival_percent) %>%
+  dplyr::distinct()
+
+##### Creating 5 yr table #################
+
+adult_cancer_geography_5YR <- adult_cancer_geography %>%
+  dplyr::filter(years_since_diagnosis == 5 & geography_type == "Integrated Care Board") %>%
+  dplyr::select(geography_code, geography_name, cancer_site, net_survival_percent) %>%
+  dplyr::rename(five_yr_survival = net_survival_percent) %>%
+  dplyr::distinct()
+
+##### Joining #################
+
+
+adult_cancer_geography_all_1 <- adult_cancer_geography_1YR %>%
+  dplyr::full_join(adult_cancer_geography_5YR, by = join_by(cancer_site, geography_name, geography_code)) %>% 
+  dplyr::distinct()
+
+
 ######################################################
 # 2. Trends between recent and previous datasets
 ######################################################
@@ -202,8 +315,8 @@ adult_cancer_survival_trends <-
 # Assessing percentage change
 adult_cancer_survival_trends_2 <- adult_cancer_survival_trends %>%
   dplyr::mutate(
-    prcnt_chng_one_yr = 100*(one_year_survival - as.numeric(one_year_survival_prev))/as.numeric(one_year_survival_prev),
-    prcnt_chng_five_yr = 100*(five_year_survival - as.numeric(five_year_survival_prev))/as.numeric(five_year_survival_prev),
+    prcnt_chng_one_yr = ifelse(!is.na((one_year_survival - as.numeric(one_year_survival_prev))/as.numeric(one_year_survival_prev)),paste0(round(100*(one_year_survival - as.numeric(one_year_survival_prev))/as.numeric(one_year_survival_prev), 1), "%"), NA),
+    prcnt_chng_five_yr = ifelse(!is.na((five_year_survival - as.numeric(five_year_survival_prev))/as.numeric(five_year_survival_prev)), paste0(round(100*(five_year_survival - as.numeric(five_year_survival_prev))/as.numeric(five_year_survival_prev), 1), "%"), NA),
     #prcnt_chng_ten_yr = 100*(ten_year_survival - as.numeric(ten_year_survival_prev))/as.numeric(ten_year_survival_prev)
   ) %>%
   dplyr::select(cancer_site, prcnt_chng_one_yr, prcnt_chng_five_yr)#, prcnt_chng_ten_yr)

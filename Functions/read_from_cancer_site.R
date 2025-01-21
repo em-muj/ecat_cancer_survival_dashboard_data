@@ -40,4 +40,6 @@ read_from_cancer_site <- function(excel_file, no_tables, data_type){
   assign(paste0(data_type, "_table_",i), data, .GlobalEnv)
   
   }
+  
+  message(paste0("Data ", data_type, " has been uploaded to R environment."))
 }

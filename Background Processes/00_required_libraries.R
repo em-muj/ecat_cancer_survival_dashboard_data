@@ -15,3 +15,5 @@ library(pacman)
 
 # Use p_load to check for, install, and load packages
 pacman::p_load(tidyverse, stringr, lubridate, readxl, openxlsx, dplyr, janitor, utils, writexl, readODS)
+
+message("Packages understood and downloaded.")
