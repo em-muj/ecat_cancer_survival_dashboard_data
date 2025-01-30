@@ -1,9 +1,9 @@
 # Emma Muijen
 # 21 January 2025
 
-# First script in a series to prepare data for ECAT Survival Dashboard
+# Second script in a series to prepare data for ECAT Survival Dashboard
 
-# RUN THIS SCRIPT ONE STEP AT A TIME. IF YOU DISCOVER ISSUES, VISIT THE CORRESPONDING SCRIPT SAVED IN "BACKGROUND PROCESSES" FOLDER.
+# RUN THIS SCRIPT ONE STEP AT A TIME. IF YOU DISCOVER ISSUES, VISIT THE CORRESPONDING SCRIPT SAVED IN "BACKGROUND PROCESSES" AND "FUNCTIONS" FOLDERS.
 # THERE SHOULD NOT BE ANY NEED TO MAKE CHANGES TO THIS SCRIPT.
 
 # LIBRARIES ---------------------------------------------------------------
@@ -65,7 +65,7 @@ read_from(survival_index_path, "Geography type", "survival_index")
 
 # Downloading data
 source("Functions/download_ODS.R")
-download_ODS("incidence_data", paste0(path_fldr, "/", registration_data), "Table_1_National")
+download_ODS("incidence_data", paste0(path_fldr, "/", registration_data))#, "Table_1")
 
 # Cleaning the excel sheet
 source("Functions/clean_excel_sheets.R")
@@ -73,10 +73,25 @@ clean_excel_sheets(incidence_data_file_path)
 
 # Uploading data to R environment
 source("Functions/read_from.R")
-read_from(incidence_data_file_path, "Geography type", "incidence")
+read_from(incidence_data_file_path, "ICD10 code", "incidence")
 
 
 # DOWNLOADING ICB LOCATION DATA -------------------------------------------
 
 ICB_loc <- utils::read.csv(paste0(path_fldr, "/",ICB_loc_name))
 
+
+# INTERNATIONAL COMPARISONS -----------------------------------------------
+
+# Only run the below if you would like to use R to arrange the international data and you have read the instructions in the "01_links_to_data.R" script.
+
+file_path <- paste0(path_fldr, "/", international)
+
+adult <- readxl::read_excel(file_path, sheet = "Adult 5 yr net survival for R")
+
+childhood <- readxl::read_excel(file_path, sheet = "Childhood 5 yr survival for R")
+
+
+adult_historic <- readxl::read_excel(file_path, sheet = "Historical adult for R")
+
+childhood_historic <- readxl::read_excel(file_path, sheet = "Historical childhood for R")

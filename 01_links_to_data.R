@@ -59,7 +59,7 @@ survival_index_URL <- "https://files.digital.nhs.uk/6D/2C8DEA/Index_reference_ta
 # Save cancer_registrations_2022_table_1_national to data folder (path_fldr specified in line 21 of this script by user above)
 
 # Please enter the updated name of the file below (INCLUDING THE FILE EXTENSION):
-registration_data <- "cancer_registrations_2022_table_2_national.ods"
+registration_data <- "Cancer_Registrations_2018_Data_Tables_GW-1286.ods"
 
 
 # ICB LOCATION ------------------------------------------------------------
@@ -71,3 +71,17 @@ registration_data <- "cancer_registrations_2022_table_2_national.ods"
 
 # Please enter the updated name of the file below (INCLUDING THE FILE EXTENSION):
 ICB_loc_name <- "Integrated_Care_Boards_April_2023_LOCATIONS.csv"
+
+
+
+# INTERNATIONAL COMPARISONS -----------------------------------------------
+
+# This data is extracted from the Concord data. At the time of writing, the most up-to-date data was 2010-2014.
+# The "international_comparisons.xlsx" data saved on the SharePoint, with path: Department of Health and Social Care/NW027 - Performance Insight/ANALYSTS/Cancer/Survival and Diagnosis/Dashboard/Data
+# had tabs ending with "for R" extracted from the data.
+# Note the "historic" tabs have data from the previous Concord dataset, (2000-2009)
+# If the Concord dataset is updated, this historic data would be what is used currently, 2010-2014 data
+
+# If you would like to arrange the data using R, then please enter the name of the file with the same data and tab names as those ending in "for R" in the previous file.
+# This file should be saved in the path_fldr (specified by the user in line 21 of this script)
+international <- "international_comparisons.xlsx"

@@ -27,10 +27,11 @@ read_from <- function(file_path, key_column, table_name){
     # If key_column is found, read data from that row onwards
     if (length(header_row) > 0) {
       # Read the data again with the correct header and skip rows before the header
-      data <- read_excel(file_path, sheet = sheet_names[i], skip = header_row - 1, col_names = TRUE)
+      data <- readxl::read_excel(file_path, sheet = sheet_names[i], skip = header_row - 1, col_names = TRUE)
     } else {
       # If not found, return NULL or an empty dataframe
       data <- NULL
+      message(paste0(file_path," with sheet name ", sheet_names[i], " could not be found."))
     }
     
     # Saving tables to environment
