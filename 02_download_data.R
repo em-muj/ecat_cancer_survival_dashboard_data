@@ -72,8 +72,8 @@ source("Functions/clean_excel_sheets.R")
 clean_excel_sheets(incidence_data_file_path)
 
 # Uploading data to R environment
-source("Functions/read_from.R")
-read_from(incidence_data_file_path, "ICD10 code", "incidence")
+source("Functions/read_from_incidence.R")
+read_from_incidence(incidence_data_file_path, "ICD10 code", "incidence") # This may produce some errors. As long as incidence_table_0 has been uploaded, this is not a problem.
 
 
 # DOWNLOADING ICB LOCATION DATA -------------------------------------------

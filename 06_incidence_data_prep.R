@@ -72,7 +72,7 @@ incidence_table_1_p1 <- incidence_table_0 %>%
   
   # Summing Count by Cancer Type (Would be preferable as rate but cannot combine genders easily)
   dplyr::group_by(cancer_site) %>%
-  dplyr::summarise( total_2018 = sum(count)) %>%
+  dplyr::summarise( total_2018 = prettyNum(sum(count), big.mark = ",", scientific = F)) %>%
   dplyr::ungroup()
 
 

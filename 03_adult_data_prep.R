@@ -423,6 +423,13 @@ adult_cancer_geography_5YR <- adult_cancer_geography %>%
   dplyr::distinct()
 
 
+
+# RETAINING ONLY LOCATION CODE AND NAME IN ICB LOCATION TABLE -------------
+
+ICB_loc_1 <- ICB_loc %>%
+  dplyr::select(ICB23CD, ICB23NM) %>%
+  dplyr::rename(geography_code = ICB23CD)
+
 # JOINING ONE YEAR AND FIVE YEAR DATASETS ---------------------------------
 
 adult_cancer_geography_all <- adult_cancer_geography_1YR %>%
@@ -431,7 +438,19 @@ adult_cancer_geography_all <- adult_cancer_geography_1YR %>%
   dplyr::full_join(adult_cancer_geography_5YR, by = join_by(cancer_site, geography_name, geography_code)) %>% 
   
   # Deleting duplicates
-  dplyr::distinct()
+  dplyr::distinct() %>%
+  
+  # Matching ICB names to the map data
+  dplyr::left_join(ICB_loc_1) %>%
+  
+  # Fixing issues with Surrey and Sussex IBCs
+  dplyr::mutate(
+    ICB23NM = dplyr::case_when(
+      geography_name == "Sussex Health and Care Partnership" ~ "NHS Sussex Integrated Care Board",
+      geography_name == "Surrey Heartlands Health and Care Partnership" ~ "NHS Surrey Heartlands Integrated Care Board",
+      TRUE ~ ICB23NM
+    )
+  )
 
 
 ###########################################################################
