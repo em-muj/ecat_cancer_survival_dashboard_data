@@ -35,7 +35,7 @@ incidence_table_1_p1 <- incidence_table_0 %>%
       type_of_rate == "Age-standardised" &
       geography_name == "England" &
       icd10_code %in% c("C21", "C67", "C17", "C18", "C20", "C71", "C50", "C18", "C18-C20", "C69", "C82", "C23", "C81", "C64", "C91-C95", "C22", "C34", "C43", "C45", "C92",
-                        "C90", "C82-C85", "C15", "C25", "C20", "C17", "C16", "C73")
+                        "C90", "C82-C85", "C15", "C25", "C20", "C17", "C16", "C73", "C53", "C32", "C56", "C61", "C62", "C54-C55", "C51")
   ) %>%
   
   # Renaming cancer types to match survival table
@@ -46,12 +46,14 @@ incidence_table_1_p1 <- incidence_table_0 %>%
       icd10_code == "C18-C20" ~ "Bowel",
       icd10_code == "C71" ~ "Brain",
       icd10_code == "C50" ~ "Breast",
+      icd10_code == "C53" ~ "Cervix",
       icd10_code == "C18" ~ "Colon",
       icd10_code == "C69" ~ "Eye",
       icd10_code == "C82" ~ "Follicular (nodular) NHL",
       icd10_code == "C23" ~ "Gallbladder",
       icd10_code == "C81" ~ "Hodgkin lymphoma",
       icd10_code == "C64" ~ "Kidney",
+      icd10_code == "C32" ~ "Larynx",
       icd10_code == "C91-C95" ~ "Leukaemia",
       icd10_code == "C22" ~ "Liver",
       icd10_code == "C34" ~ "Lung",
@@ -61,11 +63,16 @@ incidence_table_1_p1 <- incidence_table_0 %>%
       icd10_code == "C90" ~ "Myeloma",
       icd10_code == "C82-C85" ~ "Non-Hodgkin lymphoma",
       icd10_code == "C15" ~ "Oesophagus",
+      icd10_code == "C56" ~ "Ovary",
       icd10_code == "C25" ~ "Pancreas",
+      icd10_code == "C61" ~ "Prostate",
       icd10_code == "C20" ~ "Rectal",
       icd10_code == "C17" ~ "Small intestine",
       icd10_code == "C16" ~ "Stomach",
+      icd10_code == "C62" ~ "Testis",
       icd10_code == "C73" ~ "Thyroid",
+      icd10_code == "C54-C55" ~ "Uterus",
+      icd10_code == "C51" ~ "Vulva",
       TRUE ~ icd10_code
     )
   ) %>%

@@ -36,11 +36,11 @@ adult_cancer_survival_rcnt_table_1_ch1 <- adult_cancer_survival_rcnt_table_1 %>%
   # Only selecting relevant columns
   dplyr::select(cancer_site, gender, age_at_diagnosis_years, standardisation_type, 
                 years_since_diagnosis, patients, net_survival_percent) %>%
-  
+  dplyr::group_by(cancer_site) %>%
   # Only including cancer sites where rates are not separated by gender UNLESS only one gender is included, (eg. prostate cancer only includes the male gender)
   dplyr::filter((!("Persons" %in% gender) | gender == "Persons") &
                   years_since_diagnosis %in% c(1, 5, 10)) %>%
-  
+  dplyr::ungroup() %>%
   # Only including age standardisation type 5 age groups UNLESS this does not exist for a particular cancer site and stage, in which case is 4 age groups is used, this is included instead 
   dplyr::group_by(cancer_site, years_since_diagnosis) %>%
   dplyr::filter(if ("Age-standardised (5 age groups)" %in% standardisation_type) standardisation_type == "Age-standardised (5 age groups)" 
@@ -78,6 +78,7 @@ adult_cancer_survival_rcnt_table_1_ch2 <- adult_cancer_survival_rcnt_table_1_ch1
     cancer_site == "Bowel" ~ "C18 - C20",
     cancer_site == "Brain" ~ "C71",
     cancer_site == "Breast" ~ "C50",
+    cancer_site == "Cervix" ~ "C53",
     cancer_site == "Colon" ~ "C18",
     cancer_site == "Diffuse large B-cell lymphoma" ~ "C83.3",
     cancer_site == "Eye" ~ "C69",
@@ -85,6 +86,7 @@ adult_cancer_survival_rcnt_table_1_ch2 <- adult_cancer_survival_rcnt_table_1_ch1
     cancer_site == "Gallbladder" ~ "C23",
     cancer_site == "Hodgkin lymphoma" ~ "C81",
     cancer_site == "Kidney" ~ "C64",
+    cancer_site == "Larynx" ~ "C32",
     cancer_site == "Leukaemia" ~ "C91 - C95",
     cancer_site == "Liver" ~ "C22",
     cancer_site == "Lung" ~ "C34",
@@ -94,11 +96,16 @@ adult_cancer_survival_rcnt_table_1_ch2 <- adult_cancer_survival_rcnt_table_1_ch1
     cancer_site == "Myeloma" ~ "C90",
     cancer_site == "Non-Hodgkin lymphoma" ~ "C82 - C85",
     cancer_site == "Oesophagus" ~ "C15",
+    cancer_site == "Ovary" ~ "C56",
     cancer_site == "Pancreas" ~ "C25",
+    cancer_site == "Prostate" ~ "C61",
     cancer_site == "Rectal" ~ "C20",
     cancer_site == "Small intestine" ~ "C17",
     cancer_site == "Stomach" ~ "C16",
-    cancer_site == "Thyroid" ~ "C73"
+    cancer_site == "Testis" ~ "C62",
+    cancer_site == "Thyroid" ~ "C73",
+    cancer_site == "Uterus" ~ "C54 - C55",
+    cancer_site == "Vulva" ~ "C51"
     
   ))
 
@@ -111,11 +118,12 @@ adult_cancer_survival_rcnt_table_1_ch2 <- adult_cancer_survival_rcnt_table_1_ch1
 # RETAINING NON-GENDERED AND GENDERED CANCERS -----------------------------
 
 adult_cancer_age <- adult_cancer_survival_rcnt_table_1 %>%
-  
+  dplyr::group_by(cancer_site) %>%
   # Only including cancer sites where rates are not separated by gender UNLESS only one gender is included, (eg. prostate cancer only includes the male gender)
   dplyr::filter((!("Persons" %in% gender) | gender == "Persons") & standardisation_type == "Non-standardised" &
                   years_since_diagnosis %in% c(1, 5, 10) &
-                  age_at_diagnosis_years != "All ages")
+                  age_at_diagnosis_years != "All ages") %>%
+    dplyr::ungroup()
 
 
 # CREATING A TABLE OF 1 YR SURVIVAL ---------------------------------------
@@ -377,10 +385,11 @@ adult_trends_FIVE <- adult_trends_FIVE_1 %>%
 
 adult_cancer_geography <- adult_cancer_survival_rcnt_table_4 %>%
   
+  dplyr::group_by(cancer_site) %>%
   # Only including one gender per cancer site
   dplyr::filter((!("Persons" %in% gender) | gender == "Persons") &
                   years_since_diagnosis %in% c(1, 5, 10)) %>%
- 
+ dplyr::ungroup() %>%
    # Only including age standardisation type 5 age groups UNLESS this does not exist for a particular cancer site and stage, in which case is 4 age groups is used, this is included instead 
   dplyr::group_by(cancer_site, geography_code, years_since_diagnosis) %>%
   dplyr::filter(if ("Age-standardised (5 age groups)" %in% standardisation_type) standardisation_type == "Age-standardised (5 age groups)" 
@@ -466,7 +475,7 @@ adult_cancer_gender <- adult_cancer_survival_rcnt_table_1 %>%
                   years_since_diagnosis %in% c(1, 5, 10) &
                   
                   # Removing any gendered cancers
-                  !(cancer_site %in% c("Vulva", "Uterus", "Testis", "Prostate", "Ovary", "Cervix", "Breast"))) %>%
+                  !(cancer_site %in% c("Larynx", "Vulva", "Uterus", "Testis", "Prostate", "Ovary", "Cervix", "Breast"))) %>%
   
   # Only including age standardisation type 5 age groups UNLESS this does not exist for a particular cancer site and gender, in which case is 4 age groups is used, this is included instead 
   dplyr::group_by(cancer_site, gender, years_since_diagnosis) %>%
