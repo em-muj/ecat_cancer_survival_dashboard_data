@@ -1,0 +1,16 @@
+This project outlines the data cleaning process used to prepare data for the Cancer Survival Dashboard.
+
+It is not automated due to inconsistent data structures. Steps are outlined so that processes can easily be changed by the user.
+
+Scripts have documentation and user instructions. Handover notes for the dashboard can be found on the SharePoint, following path "Department of Health and Social Care\NW027 - Performance Insight\ANALYSTS\Cancer\Survival and Diagnosis\Dashboard\250203 Survival Dashboard Handover.docx"
+
+To begin the data cleaning process, begin by following the instructions and running the scripts in the following order:
+
+01_links_to_data.R
+02_download_data.R
+03_adult_data_prep.R
+04_childhood_data_prep.R
+05_index_data_prep.R
+06_incidence_data_prep.R
+07_international_data_prep.R (THIS SCRIPT IS OPTIONAL. MANUAL MANIPULATION OF DATA OUTSIDE OF R IS OUTLINED IN HANDOVER NOTES.)
+08_saving_data_for_use.R
